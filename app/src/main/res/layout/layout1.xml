@@ -46,6 +46,10 @@
             android:src="@drawable/ic_settings"
             app:tint="@android:color/white" />
 
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+
 
 
 
