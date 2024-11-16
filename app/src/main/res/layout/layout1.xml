@@ -71,7 +71,7 @@
             android:id="@+id/heartRateImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/heart_rate"
+            android:src="@drawable/ic_pen"
             android:contentDescription="Heart Rate"
             android:layout_marginEnd="16dp" />
 
@@ -128,7 +128,7 @@
             android:id="@+id/oxygenImage"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:src="@drawable/oxygen_level"
+            android:src="@drawable/ic_pen"
             android:contentDescription="Oxygen Level" />
 
         <!-- SPO2 Text -->

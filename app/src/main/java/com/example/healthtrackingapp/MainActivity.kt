@@ -1,6 +1,9 @@
 package com.example.healthtrackingapp
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,32 +19,13 @@ import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            HealthTrackingAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+        setContentView(R.layout.layout1)
+
+        val settingBtn: ImageButton = findViewById(R.id.settingsButton)
+        settingBtn.setOnClickListener{
+            val intent = Intent(this, settings::class.java)
+            startActivity(intent)
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HealthTrackingAppTheme {
-        Greeting("Android")
-    }
-}

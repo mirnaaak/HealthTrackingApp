@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#B22222"
+        android:padding="5dp"
+        android:gravity="center_vertical">
+
+        <!-- History Button -->
+        <ImageView
+            android:id="@+id/backArrowImageView"
+            android:layout_width="42dp"
+            android:layout_height="29dp"
+            android:layout_margin="8dp"
+            android:maxHeight="10dp"
+            android:src="@drawable/back_arrow"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Settings"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- Main Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Emergency Number"
+            android:textColor="#B22222"
+            android:layout_marginEnd="40dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- EditText -->
+            <EditText
+                android:id="@+id/myEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter Emergency Number"
+                android:inputType="number"
+                android:enabled="false"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Button -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_edit_button">
+
+                <ImageView
+                    android:id="@+id/enableButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_pen"
+                    android:contentDescription="Edit"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_save_button"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="350dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
