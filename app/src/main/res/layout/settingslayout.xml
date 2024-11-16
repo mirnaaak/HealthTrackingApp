@@ -13,14 +13,14 @@
         android:padding="5dp"
         android:gravity="center_vertical">
 
-        <!-- History Button -->
         <ImageView
             android:id="@+id/backArrowImageView"
             android:layout_width="42dp"
             android:layout_height="29dp"
             android:layout_margin="8dp"
             android:maxHeight="10dp"
-            android:src="@drawable/back_arrow"/>
+            android:src="@drawable/back_arrow"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <!-- Title -->
         <TextView
