@@ -6,49 +6,51 @@
     tools:context=".MainActivity">
 
     <!-- Top App Bar -->
+
+    <!-- Main Layout for Heart Rate and Oxygen -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:background="@color/red"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="#B22222"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:padding="16dp">
 
         <!-- History Button -->
         <TextView
             android:id="@+id/historyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="History"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif-medium" />
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <!-- Title -->
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Live Readings"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:gravity="center" />
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginEnd="30dp"/>
 
         <!-- Settings Button -->
         <ImageButton
             android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_settings"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="Settings"
-            android:tint="@android:color/white" />
+            android:src="@drawable/ic_settings"
+            android:tint="@color/white" />
     </LinearLayout>
 
-    <!-- Main Layout for Heart Rate and Oxygen -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,53 +60,53 @@
         android:gravity="center"
         android:padding="16dp">
 
-    <!-- Heart Rate Section -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="32dp">
-
-        <!-- Heart Image -->
-        <ImageView
-            android:id="@+id/heartRateImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_pen"
-            android:contentDescription="Heart Rate"
-            android:layout_marginEnd="16dp" />
-
-        <!-- Heart Rate Text and BPM -->
+        <!-- Heart Rate Section -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
 
-            <!-- Heart Rate Value -->
-            <TextView
-                android:id="@+id/heartRateText"
+            <!-- Heart Image -->
+            <ImageView
+                android:id="@+id/heartRateImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_pen"
+                android:contentDescription="Heart Rate"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Heart Rate Text and BPM -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="51"
-                android:textSize="40sp"
-                android:textColor="#3EB489"
-                android:gravity="center" />
+                android:orientation="vertical"
+                android:gravity="center">
 
-            <!-- BPM Text -->
-            <TextView
-                android:id="@+id/bpmText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BPM"
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
-                android:gravity="center" />
+                <!-- Heart Rate Value -->
+                <TextView
+                    android:id="@+id/heartRateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="51"
+                    android:textSize="40sp"
+                    android:textColor="@color/green"
+                    android:gravity="center" />
+
+                <!-- BPM Text -->
+                <TextView
+                    android:id="@+id/bpmText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BPM"
+                    android:textSize="16sp"
+                    android:textColor="@color/darker_gray"
+                    android:gravity="center" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Measuring Heart Rate Text -->
+        <!-- Measuring Heart Rate Text -->
 
         <!-- Oxygen Level Section -->
         <TextView
@@ -114,7 +116,7 @@
             android:layout_marginBottom="32dp"
             android:gravity="center"
             android:text="Measuring heart rate"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/darker_gray"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -123,35 +125,35 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!-- Oxygen Image -->
-        <ImageView
-            android:id="@+id/oxygenImage"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:src="@drawable/ic_pen"
-            android:contentDescription="Oxygen Level" />
+            <!-- Oxygen Image -->
+            <ImageView
+                android:id="@+id/oxygenImage"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/ic_pen"
+                android:contentDescription="Oxygen Level" />
 
-        <!-- SPO2 Text -->
-        <TextView
-            android:id="@+id/spo2Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SPO2"
-            android:textSize="28sp"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:layout_marginTop="8dp" />
+            <!-- SPO2 Text -->
+            <TextView
+                android:id="@+id/spo2Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SPO2"
+                android:textSize="28sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_marginTop="8dp" />
 
-        <!-- Measure Text -->
-        <TextView
-            android:id="@+id/measureText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Measure"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="16dp"
-            android:gravity="center" />
+            <!-- Measure Text -->
+            <TextView
+                android:id="@+id/measureText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Measure"
+                android:textSize="14sp"
+                android:textColor="@color/darker_gray"
+                android:layout_marginTop="16dp"
+                android:gravity="center" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-    </RelativeLayout>
+</RelativeLayout>

@@ -7,17 +7,16 @@
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal"
-        android:background="#B22222"
-        android:padding="5dp"
+        android:background="@color/red"
+        android:padding="10dp"
         android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/backArrowImageView"
             android:layout_width="42dp"
-            android:layout_height="29dp"
-            android:layout_margin="8dp"
+            android:layout_height="30dp"
             android:maxHeight="10dp"
             android:src="@drawable/back_arrow"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
@@ -25,13 +24,14 @@
         <!-- Title -->
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Settings"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:gravity="center" />
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginEnd="40dp"/>
 
     </LinearLayout>
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Emergency Number"
-            android:textColor="#B22222"
+            android:textColor="@color/red"
             android:layout_marginEnd="40dp"/>
 
         <LinearLayout
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
-            android:textColor="@android:color/white"
+            android:textColor="@color/white"
             android:background="@drawable/rounded_save_button"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="350dp"/>
