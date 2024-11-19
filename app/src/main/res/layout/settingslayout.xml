@@ -45,9 +45,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Emergency Number"
+            android:text="Change the Emergency Number"
             android:textColor="@color/red"
-            android:layout_marginEnd="40dp"/>
+            android:layout_marginEnd="45dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:id="@+id/myEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Enter Emergency Number"
+                android:hint="Enter an Emergency Number"
                 android:inputType="number"
                 android:enabled="false"
                 android:layout_marginEnd="10dp"
@@ -90,7 +90,8 @@
             android:textColor="@color/white"
             android:background="@drawable/rounded_save_button"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="350dp"/>
+            android:layout_marginBottom="350dp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </RelativeLayout>

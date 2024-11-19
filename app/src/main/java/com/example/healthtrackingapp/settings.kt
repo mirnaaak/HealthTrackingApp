@@ -3,6 +3,7 @@ package com.example.healthtrackingapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -37,7 +38,7 @@ class settings : ComponentActivity() {
         enableButton.setOnClickListener {
             myEditText.isEnabled = true // Enable the EditText
             myEditText.requestFocus()  // Optional: Focus the EditText
-
+            saveButton.visibility = View.VISIBLE
             // Show the keyboard
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(myEditText, InputMethodManager.SHOW_IMPLICIT)
