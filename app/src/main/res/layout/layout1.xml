@@ -155,5 +155,16 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center" />
         </LinearLayout>
+        <Button
+            android:id="@+id/EmergencyCallBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="EMERGENCY CALL"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:padding="20dp"/>
+
+
     </LinearLayout>
 </RelativeLayout>
