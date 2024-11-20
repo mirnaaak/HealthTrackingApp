@@ -6,7 +6,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "HealthDatabase.db"  // Name of the database
-        private const val DATABASE_VERSION = 1  // Database version
+        private const val DATABASE_VERSION = 2  // Database version
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -14,7 +14,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val createTable1 = """
         CREATE TABLE History (
             Date TEXT PRIMARY KEY, 
-            HB INTEGER, 
+            HR INTEGER, 
             SPO2 INTEGER
         )
     """
