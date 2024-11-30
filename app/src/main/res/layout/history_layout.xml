@@ -108,53 +108,69 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@color/red"
-            android:text="Show"
+            android:text="Filter"
             android:textColor="@color/white" />
 
     </LinearLayout>
 
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp">
 
-        <TableRow
+        <TableLayout
+            android:id="@+id/historyTable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/red"
-            android:gravity="center"
-            android:padding="5dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@color/red"
                 android:gravity="center"
-                android:text="Date"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:padding="5dp">
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Heart Rate"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Date"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="SPO2 Level"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-        </TableRow>
-    </TableLayout>
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Heart Rate"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="SPO2 Level"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Status"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 
 </LinearLayout>
