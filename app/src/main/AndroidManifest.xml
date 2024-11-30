@@ -19,7 +19,7 @@
         android:theme="@style/Theme.HealthTrackingApp"
         tools:targetApi="31">
         <activity
-            android:name=".history"
+            android:name=".HistoryActivity"
             android:exported="false"
             android:label="@string/title_activity_history"
             android:theme="@style/Theme.HealthTrackingApp" />
@@ -29,7 +29,7 @@
             android:resource="@xml/ic_round_edit_button" />
 
         <activity
-            android:name=".settings"
+            android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.HealthTrackingApp" />

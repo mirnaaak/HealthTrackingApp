@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout1)
+        setContentView(R.layout.main_layout)
 
         // Initialize the UI elements for health data
         heartRateText = findViewById(R.id.heartRateText)
@@ -53,14 +53,14 @@ class MainActivity : ComponentActivity() {
         // History button logic
         val historyBtn: TextView = findViewById(R.id.historyButton)
         historyBtn.setOnClickListener {
-            val intent = Intent(this, history::class.java)
+            val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
         }
 
         // Settings button logic
         val settingBtn: ImageButton = findViewById(R.id.settingsButton)
         settingBtn.setOnClickListener {
-            val intent = Intent(this, settings::class.java)
+            val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
 

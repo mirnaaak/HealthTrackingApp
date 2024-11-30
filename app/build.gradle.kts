@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
     annotationProcessor(libs.glide.compiler)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -6,33 +6,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
-import android.view.inputmethod.InputMethodManager
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 
-
-class settings : ComponentActivity() {
+class SettingsActivity : ComponentActivity() {
     private var initialPhoneNumber: String = ""  // To store the initial phone number
-    private var initialPhoneNumber2: String = "" // to store the initial phone number in a variable that will now change throughout the code
+    private var initialPhoneNumber2: String =
+        "" // to store the initial phone number in a variable that will now change throughout the code
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settingslayout)
+        setContentView(R.layout.settings_layout)
 
         // Access the EditText and Button
         val myEditText: EditText = findViewById(R.id.myEditText)
@@ -69,7 +57,7 @@ class settings : ComponentActivity() {
 
         // Set OnClickListener for the button to enable editing
         enableButton.setOnClickListener {
-            EditFlag =1
+            EditFlag = 1
             myEditText.isEnabled = true  // Enable the EditText
             myEditText.requestFocus()  // Focus the EditText
             saveButton.visibility = View.VISIBLE
@@ -95,7 +83,8 @@ class settings : ComponentActivity() {
 
                         // Delete existing entry and insert new phone number
                         dbWritable.execSQL("DELETE FROM EContact")
-                        val insertQuery = "INSERT INTO EContact (PhoneNumber) VALUES ('$phoneNumber')"
+                        val insertQuery =
+                            "INSERT INTO EContact (PhoneNumber) VALUES ('$phoneNumber')"
                         dbWritable.execSQL(insertQuery)
 
                         // Close the database
@@ -139,10 +128,11 @@ class settings : ComponentActivity() {
             // Check if the phone number was changed
             if (EditFlag == 1 && currentPhoneNumber == initialPhoneNumber2) {
                 // Show a Toast message if no change was made
-                Toast.makeText(this, "Emergency Number has not been changed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Emergency Number has not been changed", Toast.LENGTH_SHORT)
+                    .show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                EditFlag =0
+                EditFlag = 0
 
             } else {
                 // Proceed with back navigation
