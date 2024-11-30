@@ -155,6 +155,22 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center" />
         </LinearLayout>
+
+        <!-- TextView above the Emergency Call Button -->
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
+            android:text="Normal Reading"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/textview_border"
+            android:padding="8dp" />
+
         <Button
             android:id="@+id/EmergencyCallBtn"
             android:layout_width="wrap_content"

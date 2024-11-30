@@ -8,7 +8,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "HealthDatabase.db"  // Name of the database
-        private const val DATABASE_VERSION = 2  // Database version
+        private const val DATABASE_VERSION = 3 // Database version
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -36,11 +36,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     // Called when the database version is updated
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Drop the old tables if they exist
-        db.execSQL("DROP TABLE IF EXISTS History")
-        db.execSQL("DROP TABLE IF EXISTS EContact")
-        // Create the tables again
-        onCreate(db)
+        // Check if the database version is less than 2
+        if (oldVersion < 2) {
+            // Add the Status column to the History table if it's missing
+            db.execSQL("ALTER TABLE History ADD COLUMN Status TEXT")
+        }
+        // No need to drop tables, we just add new columns
     }
 
 
@@ -51,7 +52,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val cursor = db.rawQuery("SELECT * FROM History ORDER BY Date DESC", null)
         if (cursor.moveToFirst()) {
             do {
-                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Date"))))
+                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Status"))))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -72,7 +73,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         if (cursor.moveToFirst()) {
             do {
-                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Date"))))
+                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Status"))))
             } while (cursor.moveToNext())
         }
         cursor.close()

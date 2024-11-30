@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.Manifest
 import android.content.pm.PackageManager
-import android.provider.CallLog
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -16,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlin.random.Random
 import android.util.Log
+import android.graphics.Color
 import com.google.firebase.firestore.FirebaseFirestore
 import android.os.Handler
 
@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
     // Define variables for the UI elements
     private lateinit var heartRateText: TextView
     private lateinit var spo2Text: TextView
+    private lateinit var statusText: TextView  // Renamed from emergencyText to statusText
 
     private val REQUEST_CALL_PHONE = 1  // Request code for CALL_PHONE permission
 
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
         // Initialize the UI elements for health data
         heartRateText = findViewById(R.id.heartRateText)
         spo2Text = findViewById(R.id.spo2Text)
+        statusText = findViewById(R.id.statusText)  // Renamed here
 
         // Start the data fetching process
         handler.post(fetchDataRunnable)
@@ -109,18 +111,24 @@ class MainActivity : ComponentActivity() {
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
                     // Retrieve fields from the document
-                    val hr = document.getString("HR") ?: "N/A"
-                    val spo2 = document.getString("SPO2") ?: "N/A"
+                    val hr = document.getString("HR")?.toIntOrNull() ?: 0
+                    val spo2 = document.getString("SPO2")?.toIntOrNull() ?: 0
 
                     // Update the UI with the fetched values
-                    heartRateText.text = hr
-                    spo2Text.text = spo2
+                    heartRateText.text = hr.toString()
+                    spo2Text.text = spo2.toString()
 
-                    // Notify user which reading was fetched
-                    Log.d("Firebase", "Data fetched from $randomId: HR = $hr, SPO2 = $spo2")
+                    // Check for abnormal readings and update statusText
+                    if (hr < 60 || hr > 100 || spo2 < 94) {
+                        statusText.text = "Abnormal Reading"
+                        statusText.setTextColor(ContextCompat.getColor(this, R.color.red)) // Red for abnormal readings
+                    } else {
+                        statusText.text = "Normal Reading"
+                        statusText.setTextColor(ContextCompat.getColor(this, R.color.green)) // Green for normal readings
+                    }
 
                     // Insert the fetched data into the local database (History table)
-                    insertReadingIntoHistory(hr.toIntOrNull() ?: 0, spo2.toIntOrNull() ?: 0)
+                    insertReadingIntoHistory(hr, spo2)
                 } else {
                     Log.e("Firebase", "Document does not exist")
                     Toast.makeText(this, "No data found for $randomId", Toast.LENGTH_SHORT).show()
@@ -137,23 +145,27 @@ class MainActivity : ComponentActivity() {
         // Get the current time in the format 'yyyy-MM-dd HH:mm:ss'
         val currentTime = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
 
+        // Get the current status from the statusText
+        val currentStatus = statusText.text.toString()
+
         // Get the writable database
         val dbHelper = DatabaseHelper(this)
         val db = dbHelper.writableDatabase
 
-        // Insert the data into the History table
+        // Insert the data into the History table including the statusText
         val insertQuery = """
-            INSERT INTO History (Date, HR, SPO2) 
-            VALUES (?, ?, ?)
+            INSERT INTO History (Date, HR, SPO2, Status) 
+            VALUES (?, ?, ?, ?)
         """
         val statement = db.compileStatement(insertQuery)
         statement.bindString(1, currentTime)  // Bind the current time
         statement.bindLong(2, hr.toLong())    // Bind the heart rate
         statement.bindLong(3, spo2.toLong())  // Bind the SPO2 level
+        statement.bindString(4, currentStatus)  // Bind the current status (statusText)
 
         // Execute the insert
         statement.executeInsert()
-        Log.d("Database", "Inserted data into History: Time = $currentTime, HR = $hr, SPO2 = $spo2")
+        Log.d("Database", "Inserted data into History: Time = $currentTime, HR = $hr, SPO2 = $spo2, Status = $currentStatus")
     }
 
     // Handle the result of the permission request
