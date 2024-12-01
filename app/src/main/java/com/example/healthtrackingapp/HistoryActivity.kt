@@ -57,7 +57,7 @@ class HistoryActivity : ComponentActivity() {
         filterBtn = findViewById(R.id.filterBtn)
         filterBtn.setOnClickListener {
             if (fromDate.text.isEmpty() && toDate.text.isEmpty()) {
-                Toast.makeText(this, "Please enter one of the dates", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter at least one of the dates", Toast.LENGTH_SHORT).show()
             } else if (fromDate.text.isNotEmpty() && toDate.text.isEmpty()) {
                 populateTable(
                     dbHelper.filterFromHistories(
