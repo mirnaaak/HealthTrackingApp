@@ -124,7 +124,7 @@ class MainActivity : ComponentActivity() {
                         statusText.setTextColor(ContextCompat.getColor(this, R.color.red)) // Red for abnormal readings
                     } else {
                         statusText.text = "Normal Reading"
-                        statusText.setTextColor(ContextCompat.getColor(this, R.color.green)) // Green for normal readings
+                        statusText.setTextColor(ContextCompat.getColor(this, R.color.dark_green)) // Green for normal readings
                     }
 
                     // Insert the fetched data into the local database (History table)
@@ -161,7 +161,7 @@ class MainActivity : ComponentActivity() {
         statement.bindString(1, currentTime)  // Bind the current time
         statement.bindLong(2, hr.toLong())    // Bind the heart rate
         statement.bindLong(3, spo2.toLong())  // Bind the SPO2 level
-        statement.bindString(4, currentStatus)  // Bind the current status (statusText)
+        statement.bindString(4, currentStatus.replace(" Reading", ""))  // Bind the current status (statusText)
 
         // Execute the insert
         statement.executeInsert()

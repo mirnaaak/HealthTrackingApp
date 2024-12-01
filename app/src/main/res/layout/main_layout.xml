@@ -164,7 +164,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="32dp"
             android:text="Normal Reading"
-            android:textColor="@color/black"
+            android:textColor="@color/dark_green"
             android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"

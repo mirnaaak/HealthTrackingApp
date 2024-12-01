@@ -3,6 +3,7 @@ package com.example.healthtrackingapp
 import DatabaseHelper
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
@@ -11,16 +12,19 @@ import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.Date
 
 class HistoryActivity : ComponentActivity() {
     private val calendar = Calendar.getInstance()
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var historyTable: TableLayout
     private lateinit var filterBtn: Button
+    private lateinit var resetBtn: Button
     private lateinit var fromDate: EditText
     private lateinit var toDate: EditText
 
@@ -50,21 +54,63 @@ class HistoryActivity : ComponentActivity() {
         historyTable = findViewById(R.id.historyTable)
         populateTable(dbHelper.getAllHistories())
 
-        filterBtn = findViewById(R.id.button)
+        filterBtn = findViewById(R.id.filterBtn)
         filterBtn.setOnClickListener {
-            populateTable(dbHelper.filterHistories(formatDateString(fromDate.text.toString()), formatDateString(toDate.text.toString())))
+            if (fromDate.text.isEmpty() && toDate.text.isEmpty()) {
+                Toast.makeText(this, "Please enter one of the dates", Toast.LENGTH_SHORT).show()
+            } else if (fromDate.text.isNotEmpty() && toDate.text.isEmpty()) {
+                populateTable(
+                    dbHelper.filterFromHistories(
+                        databaseFormatFromDateString(fromDate.text.toString())
+                    )
+                )
+            } else if (fromDate.text.isEmpty() && toDate.text.isNotEmpty()) {
+                populateTable(
+                    dbHelper.filterToHistories(
+                        databaseFormatToDateString(toDate.text.toString())
+                    )
+                )
+            } else {
+                if (fromDate.text.toString() == toDate.text.toString() || isFromBeforeTo(
+                        fromDate.text.toString(),
+                        toDate.text.toString()
+                    )
+                ) {
+                    populateTable(
+                        dbHelper.filterHistories(
+                            databaseFormatFromDateString(fromDate.text.toString()),
+                            databaseFormatToDateString(toDate.text.toString())
+                        )
+                    )
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Please enter dates in the correct order",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+
+        resetBtn = findViewById(R.id.resetBtn)
+        resetBtn.setOnClickListener {
+            fromDate.setText("")
+            toDate.setText("")
+            populateTable(dbHelper.getAllHistories())
         }
 
     }
 
-    private fun showDatePicker(item:EditText) {
-        DatePickerDialog(this,{DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
-            val selectedDate:Calendar=Calendar.getInstance()
-            selectedDate.set(year,monthOfYear,dayOfMonth)
-            val dateFormat=SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate:String=dateFormat.format(selectedDate.time)
-            item.setText(formattedDate)
-        },
+    private fun showDatePicker(item: EditText) {
+        DatePickerDialog(
+            this, { DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                val selectedDate: Calendar = Calendar.getInstance()
+                selectedDate.set(year, monthOfYear, dayOfMonth)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedDate: String = dateFormat.format(selectedDate.time)
+                item.setText(formattedDate)
+            },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
@@ -98,23 +144,25 @@ class HistoryActivity : ComponentActivity() {
             tableRow.setPadding(5, 5, 5, 5)
 
             // Create TextViews for each column
-            val tvDate = createTextView(history.date)
+            val tvDate = createTextView(displayFormatDateString(history.date))
             val tvHR = createTextView(history.hr.toString())
             val tvSPO2 = createTextView(history.spo2.toString())
-//            val tvStatus = createTextView(history.status)
+            val tvStatus = createTextView(history.status)
 
-//            tvStatus.setTextColor(resources.getColor(R.color.black))
-//            if(history.status =="Normal"){
-//                tvStatus.setBackgroundColor(resources.getColor(R.color.green))
-//            }else{
-//                tvStatus.setBackgroundColor(resources.getColor(R.color.red))
-//            }
+            tvStatus.setTextColor(resources.getColor(R.color.white))
+            tvStatus.setPadding(10, 5, 10, 5)
+            tvStatus.textSize = 15f
+            if (history.status == "Normal") {
+                tvStatus.setBackgroundColor(resources.getColor(R.color.dark_green))
+            } else {
+                tvStatus.setBackgroundColor(resources.getColor(R.color.red))
+            }
 
             // Add TextViews to the row
             tableRow.addView(tvDate)
             tableRow.addView(tvHR)
             tableRow.addView(tvSPO2)
-//            tableRow.addView(tvStatus)
+            tableRow.addView(tvStatus)
 
             // Add the row to the TableLayout
             historyTable.addView(tableRow)
@@ -135,7 +183,7 @@ class HistoryActivity : ComponentActivity() {
         return textView
     }
 
-    fun formatDateString(dateString: String): String {
+    private fun databaseFormatToDateString(dateString: String): String {
         // Define the input format (dd/MM/yyyy)
         val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
 
@@ -156,4 +204,41 @@ class HistoryActivity : ComponentActivity() {
         return outputFormat.format(calendar.time)
     }
 
+    private fun databaseFormatFromDateString(dateString: String): String {
+        // Define the input format (dd/MM/yyyy)
+        val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+
+        // Parse the input date string
+        val date = inputFormat.parse(dateString)
+
+        // Define the output format (yyyy-MM-dd HH:mm:ss)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+
+        // Format the date into the new format
+        return outputFormat.format(date)
+    }
+
+    private fun displayFormatDateString(dateString: String): String {
+        // Define the input and output date formats
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US)
+
+        // Parse the input date string
+        val date = inputFormat.parse(dateString)
+
+        // Format the date into the new format
+        return outputFormat.format(date)
+    }
+
+    private fun isFromBeforeTo(fromDate: String, toDate: String): Boolean {
+        // Define the date format
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+
+        // Parse the strings into Date objects
+        val date1: Date = format.parse(fromDate)!!
+        val date2: Date = format.parse(toDate)!!
+
+        // Compare the dates
+        return date1.before(date2)
+    }
 }

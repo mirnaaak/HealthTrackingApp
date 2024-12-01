@@ -102,14 +102,33 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@color/red"
-            android:text="Filter"
-            android:textColor="@color/white" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/filterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/red_btn"
+                android:text="Filter"
+                android:textColor="@color/white"
+                android:layout_marginEnd="20dp"/>
+
+            <Button
+                android:id="@+id/resetBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/red_border_btn"
+                android:text="Reset"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -121,20 +140,26 @@
         <TableLayout
             android:id="@+id/historyTable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:shrinkColumns="*"
+            android:divider="?android:attr/dividerVertical"
+            android:showDividers="middle"
+            android:paddingHorizontal="3dp">
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/red"
+                android:background="@drawable/red_btn"
                 android:gravity="center"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center"
                     android:text="Date"
                     android:textColor="@color/white"
@@ -148,7 +173,8 @@
                     android:gravity="center"
                     android:text="Heart Rate"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginRight="5dp"/>
 
                 <TextView
                     android:id="@+id/textView10"

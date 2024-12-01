@@ -81,5 +81,47 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return histories
     }
 
+    @SuppressLint("Range")
+    fun filterFromHistories(date: String): List<History> {
+        val histories = mutableListOf<History>()
+        val db = this.readableDatabase
+
+        // Use placeholders for query parameters to prevent SQL injection
+        val cursor = db.rawQuery(
+            "SELECT * FROM History WHERE Date >= ?  ORDER BY Date DESC",
+            arrayOf(date)
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Status"))))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return histories
+    }
+
+    @SuppressLint("Range")
+    fun filterToHistories(date: String): List<History> {
+        val histories = mutableListOf<History>()
+        val db = this.readableDatabase
+
+        // Use placeholders for query parameters to prevent SQL injection
+        val cursor = db.rawQuery(
+            "SELECT * FROM History WHERE Date <= ?  ORDER BY Date DESC",
+            arrayOf(date)
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                histories.add(History(cursor.getString(cursor.getColumnIndexOrThrow("Date")), cursor.getInt(cursor.getColumnIndex("HR")), cursor.getInt(cursor.getColumnIndex("SPO2")), cursor.getString(cursor.getColumnIndex("Status"))))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return histories
+    }
+
 
 }
