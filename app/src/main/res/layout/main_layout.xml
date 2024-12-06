@@ -1,186 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Top App Bar -->
-
-    <!-- Main Layout for Heart Rate and Oxygen -->
-    <LinearLayout
-        android:id="@+id/topBar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/red"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
-        <!-- History Button -->
-        <TextView
-            android:id="@+id/historyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="History"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <!-- Title -->
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Live Readings"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_marginEnd="30dp"/>
-
-        <!-- Settings Button -->
-        <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Settings"
-            android:src="@drawable/ic_settings"
-            android:tint="@color/white" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/topBar"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp">
-
-        <!-- Heart Rate Section -->
+        <!-- Top App Bar -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/red"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- History Button -->
+            <TextView
+                android:id="@+id/historyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="History"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Live Readings"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginEnd="30dp" />
+
+            <!-- Settings Button -->
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Settings"
+                android:src="@drawable/ic_settings"
+                android:tint="@color/white" />
+        </LinearLayout>
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topBar"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
             android:gravity="center"
-            android:layout_marginBottom="32dp">
+            android:padding="16dp">
 
-            <!-- Heart Image -->
-            <ImageView
-                android:id="@+id/heartRateImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_pen"
-                android:contentDescription="Heart Rate"
-                android:layout_marginEnd="16dp" />
+            <!-- Heart Rate Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="32dp">
 
-            <!-- Heart Rate Text and BPM -->
+                <!-- Heart Image -->
+                <ImageView
+                    android:id="@+id/heartRateImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_pen"
+                    android:contentDescription="Heart Rate"
+                    android:layout_marginEnd="16dp" />
+
+                <!-- Heart Rate Text and BPM -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <!-- Heart Rate Value -->
+                    <TextView
+                        android:id="@+id/heartRateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="51"
+                        android:textSize="40sp"
+                        android:textColor="@color/green"
+                        android:gravity="center" />
+
+                    <!-- BPM Text -->
+                    <TextView
+                        android:id="@+id/bpmText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BPM"
+                        android:textSize="16sp"
+                        android:textColor="@color/darker_gray"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Measuring Heart Rate Text -->
+            <TextView
+                android:id="@+id/measuringHeartRateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+                android:text="Measuring heart rate"
+                android:textColor="@color/darker_gray"
+                android:textSize="14sp" />
+
+            <!-- Oxygen Level Section -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <!-- Heart Rate Value -->
-                <TextView
-                    android:id="@+id/heartRateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="51"
-                    android:textSize="40sp"
-                    android:textColor="@color/green"
-                    android:gravity="center" />
+                <!-- Oxygen Image -->
+                <ImageView
+                    android:id="@+id/oxygenImage"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/ic_pen"
+                    android:contentDescription="Oxygen Level" />
 
-                <!-- BPM Text -->
+                <!-- SPO2 Text -->
                 <TextView
-                    android:id="@+id/bpmText"
+                    android:id="@+id/spo2Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BPM"
-                    android:textSize="16sp"
+                    android:text="SPO2"
+                    android:textSize="28sp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Measure Text -->
+                <TextView
+                    android:id="@+id/measureText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Measure"
+                    android:textSize="14sp"
                     android:textColor="@color/darker_gray"
+                    android:layout_marginTop="16dp"
                     android:gravity="center" />
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Measuring Heart Rate Text -->
-
-        <!-- Oxygen Level Section -->
-        <TextView
-            android:id="@+id/measuringHeartRateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
-            android:text="Measuring heart rate"
-            android:textColor="@color/darker_gray"
-            android:textSize="14sp" />
-
-        <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
-            <!-- Oxygen Image -->
-            <ImageView
-                android:id="@+id/oxygenImage"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:src="@drawable/ic_pen"
-                android:contentDescription="Oxygen Level" />
-
-            <!-- SPO2 Text -->
+            <!-- TextView above the Emergency Call Button -->
             <TextView
-                android:id="@+id/spo2Text"
+                android:id="@+id/statusText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SPO2"
-                android:textSize="28sp"
-                android:textColor="@color/black"
+                android:layout_height="match_parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/textview_border"
                 android:gravity="center"
-                android:layout_marginTop="8dp" />
+                android:padding="8dp"
+                android:text="Normal Reading"
+                android:textColor="@color/green"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <!-- Measure Text -->
-            <TextView
-                android:id="@+id/measureText"
+            <!-- Emergency Button -->
+            <Button
+                android:id="@+id/EmergencyCallBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Measure"
-                android:textSize="14sp"
-                android:textColor="@color/darker_gray"
-                android:layout_marginTop="16dp"
-                android:gravity="center" />
+                android:layout_marginTop="40dp"
+                android:background="@color/red"
+                android:padding="20dp"
+                android:text="EMERGENCY CALL"
+                android:textColor="@color/white" />
         </LinearLayout>
-
-        <!-- TextView above the Emergency Call Button -->
-        <TextView
-            android:id="@+id/statusText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="32dp"
-            android:text="Normal Reading"
-            android:textColor="@color/dark_green"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/textview_border"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/EmergencyCallBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@color/red"
-            android:padding="20dp"
-            android:text="EMERGENCY CALL"
-            android:textColor="@color/white" />
-
-
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
