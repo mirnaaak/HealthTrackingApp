@@ -65,46 +65,45 @@
 
             <!-- Heart Rate Section -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="223dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="32dp"
                 android:gravity="center"
-                android:layout_marginBottom="32dp">
+                android:orientation="horizontal">
 
                 <!-- Heart Image -->
                 <ImageView
                     android:id="@+id/heartRateImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:contentDescription="Heart Rate"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Heart Rate" />
 
                 <!-- Heart Rate Text and BPM -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <!-- Heart Rate Value -->
                     <TextView
                         android:id="@+id/heartRateText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="81dp"
                         android:layout_height="wrap_content"
-                        android:text="51"
-                        android:textSize="40sp"
+                        android:gravity="center"
                         android:textColor="@color/green"
-                        android:gravity="center" />
+                        android:textSize="40sp" />
 
                     <!-- BPM Text -->
                     <TextView
                         android:id="@+id/bpmText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="BPM"
-                        android:textSize="16sp"
                         android:textColor="@color/darker_gray"
-                        android:gravity="center" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -134,35 +133,35 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:contentDescription="Oxygen Level"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginStart="7dp" />
 
                 <!-- SPO2 Text and Measure Text -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="83dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/spo2Text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="52dp"
                         android:layout_height="wrap_content"
-                        android:text="SPO2"
-                        android:textSize="28sp"
-                        android:textColor="@color/red"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="18dp"
                         android:gravity="center"
-                        android:layout_marginTop="8dp" />
+                        android:textColor="@color/red"
+                        android:textSize="40sp" />
 
                     <!-- Measure Text -->
                     <TextView
                         android:id="@+id/measureText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="%"
-                        android:textSize="25sp"
-                        android:textColor="@color/darker_gray"
                         android:layout_marginTop="16dp"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="%"
+                        android:textColor="@color/darker_gray"
+                        android:textSize="25sp" />
                 </LinearLayout>
             </LinearLayout>
 
