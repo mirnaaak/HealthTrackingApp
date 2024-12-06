@@ -35,63 +35,73 @@
 
     </LinearLayout>
 
-    <!-- Main Layout -->
-    <LinearLayout
+    <!-- Wrapping ScrollView for landscape support -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_below="@id/topBar">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change the Emergency Number"
-            android:textColor="@color/red"
-            android:layout_marginEnd="45dp"/>
-
+        <!-- Main Layout -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- EditText -->
-            <EditText
-                android:id="@+id/myEditText"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Enter an Emergency Number"
-                android:inputType="number"
-                android:enabled="false"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="16dp"/>
+                android:text="Change the Emergency Number"
+                android:textColor="@color/red"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="45dp"/>
 
-            <!-- Button -->
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/rounded_edit_button">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/enableButton"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_pen"
-                    android:contentDescription="Edit"/>
-            </FrameLayout>
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/myEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter an Emergency Number"
+                    android:inputType="number"
+                    android:enabled="false"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Button -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_edit_button">
+
+                    <ImageView
+                        android:id="@+id/enableButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_pen"
+                        android:contentDescription="Edit"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_save_button"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="350dp"
+                android:visibility="invisible"/>
         </LinearLayout>
 
-        <!-- Save Button -->
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_save_button"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="350dp"
-            android:visibility="invisible"/>
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
