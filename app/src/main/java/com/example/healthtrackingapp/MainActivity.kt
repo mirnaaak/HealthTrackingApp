@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat
 import com.example.healthtrackingapp.com.example.healthtrackingapp.HealthMonitorService
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 class MainActivity : ComponentActivity() {
 
@@ -56,6 +58,14 @@ class MainActivity : ComponentActivity() {
         } else {
             startService(Intent(this, HealthMonitorService::class.java))
         }
+
+
+        // Load the GIF into the ImageView
+        val heartRateImage = findViewById<ImageView>(R.id.heartRateImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.raw.heart) // Replace with the GIF in your 'raw' folder
+            .into(heartRateImage)
 
 
         // Initialize shared preferences to load the last call timestamp

@@ -76,7 +76,7 @@
                     android:id="@+id/heartRateImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_pen"
+
                     android:contentDescription="Heart Rate"
                     android:layout_marginEnd="16dp" />
 
