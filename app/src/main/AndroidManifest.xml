@@ -5,6 +5,7 @@
     <!-- Permissions for app -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -59,13 +60,10 @@
 
         <!-- Declare the HealthMonitorService to run as a foreground service -->
         <service
-            android:name=".com.example.healthtrackingapp.HealthMonitorService"
+            android:name=".HealthMonitorService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </service>
+            android:foregroundServiceType="location|dataSync"/>
+
     </application>
 
 </manifest>

@@ -14,7 +14,6 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import com.example.healthtrackingapp.com.example.healthtrackingapp.HealthMonitorService
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -34,13 +33,7 @@ class HistoryActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_layout)
 
-    // Start the background service again if needed
-        val serviceIntent = Intent(this, HealthMonitorService::class.java)
-        stopService(serviceIntent)
-
-
         val backBtn: ImageView = findViewById(R.id.backArrowImageView)
-
 
         backBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
