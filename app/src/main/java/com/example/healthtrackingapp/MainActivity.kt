@@ -1,23 +1,25 @@
 package com.example.healthtrackingapp
 
 import DatabaseHelper
-import android.content.Intent
-import android.os.Bundle
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kotlin.random.Random
-import android.util.Log
-import android.graphics.Color
+import com.example.healthtrackingapp.com.example.healthtrackingapp.HealthMonitorService
 import com.google.firebase.firestore.FirebaseFirestore
-import android.os.Handler
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
 
@@ -32,8 +34,8 @@ class MainActivity : ComponentActivity() {
 
     private val REQUEST_CALL_PHONE = 1  // Request code for CALL_PHONE permission
 
-    private var isCallInProgress = false  // Flag to track ongoing emergency calls
-
+    private var lastCallTimestamp: Long = 0 // Tracks the last valid call timestamp
+    var Ebutton=0
     // Handler to run the fetch every 5 seconds
     private val handler = Handler()
     private val fetchDataRunnable = object : Runnable {
@@ -43,11 +45,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
 
-        // Initialize the UI elements for health data
+        // Start the foreground service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(this, HealthMonitorService::class.java))
+        } else {
+            startService(Intent(this, HealthMonitorService::class.java))
+        }
+
+
+        // Initialize shared preferences to load the last call timestamp
+        val sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)
+        lastCallTimestamp = sharedPreferences.getLong("lastCallTimestamp", 0)
+
+        // Initialize the UI elements
         heartRateText = findViewById(R.id.heartRateText)
         spo2Text = findViewById(R.id.spo2Text)
         statusText = findViewById(R.id.statusText)
@@ -72,9 +87,8 @@ class MainActivity : ComponentActivity() {
 
         // Emergency Call button logic
         emergencyCallBtn.setOnClickListener {
-            if (!isCallInProgress) {
-                initiateEmergencyCall()
-            }
+            Ebutton=1
+            initiateEmergencyCall()
         }
     }
 
@@ -95,14 +109,10 @@ class MainActivity : ComponentActivity() {
                     if (hr < 60 || hr > 100 || spo2 < 94) {
                         statusText.text = "Abnormal Reading"
                         statusText.setTextColor(ContextCompat.getColor(this, R.color.red))
-                        if (!isCallInProgress) {
-                            initiateEmergencyCall()
-                        }
+                        initiateEmergencyCall()
                     } else {
                         statusText.text = "Normal Reading"
                         statusText.setTextColor(ContextCompat.getColor(this, R.color.dark_green))
-                        isCallInProgress = false
-                        emergencyCallBtn.isEnabled = true // Re-enable the button when readings are normal
                     }
 
                     insertReadingIntoHistory(hr, spo2)
@@ -130,17 +140,53 @@ class MainActivity : ComponentActivity() {
         cursor.close()
 
         if (phoneNumber.isNotEmpty()) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                val callIntent = Intent(Intent.ACTION_CALL)
-                callIntent.data = android.net.Uri.parse("tel:$phoneNumber")
-                startActivity(callIntent)
-                isCallInProgress = true
-                emergencyCallBtn.isEnabled = false // Disable the button during the call
+            val currentTime = System.currentTimeMillis()
+            val timeElapsed = currentTime - lastCallTimestamp
+            var callOkay = 0
+            if (timeElapsed < 5 * 60 * 1000) { // 5 minutes in milliseconds
+                val timeRemaining = 5 * 60 * 1000 - timeElapsed
+                val minutesLeft = timeRemaining / 1000 / 60
+                val secondsLeft = (timeRemaining / 1000) % 60
+                Toast.makeText(
+                    this,
+                    "Next call allowed in $minutesLeft minutes and $secondsLeft seconds.",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL_PHONE)
+                callOkay = 1
             }
-        } else {
-            Toast.makeText(this, "No emergency contact number available", Toast.LENGTH_LONG).show()
+            if (callOkay == 1 || Ebutton == 1) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.CALL_PHONE
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    val callIntent = Intent(Intent.ACTION_CALL)
+                    callIntent.data = android.net.Uri.parse("tel:$phoneNumber")
+                    startActivity(callIntent)
+
+                    // Set last call timestamp on call completion
+                    lastCallTimestamp = currentTime
+                    val sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)
+                    with(sharedPreferences.edit()) {
+                        putLong("lastCallTimestamp", lastCallTimestamp)
+                        apply()
+                    }
+                    callOkay = 0
+                    Ebutton = 0
+                } else {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.CALL_PHONE),
+                        REQUEST_CALL_PHONE
+                    )
+                }
+
+            }
+        }
+        else {
+            Toast.makeText(this, "No emergency contact number available", Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -170,4 +216,3 @@ class MainActivity : ComponentActivity() {
         handler.removeCallbacks(fetchDataRunnable)
     }
 }
-
