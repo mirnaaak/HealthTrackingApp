@@ -17,7 +17,6 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.healthtrackingapp.com.example.healthtrackingapp.HealthMonitorService
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
 import android.widget.ImageView
@@ -66,6 +65,16 @@ class MainActivity : ComponentActivity() {
             .asGif()
             .load(R.raw.heart) // Replace with the GIF in your 'raw' folder
             .into(heartRateImage)
+
+
+        val oxygenImage = findViewById<ImageView>(R.id.oxygenImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.raw.oxygen) // Replace with the GIF in your 'raw' folder
+            .into(oxygenImage)
+
+
+
 
 
         // Initialize shared preferences to load the last call timestamp
