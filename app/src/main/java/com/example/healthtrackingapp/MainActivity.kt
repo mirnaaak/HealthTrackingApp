@@ -67,6 +67,12 @@ class MainActivity : ComponentActivity() {
             .load(R.raw.heart) // Replace with the GIF in your 'raw' folder
             .into(heartRateImage)
 
+        val oxygenImage = findViewById<ImageView>(R.id.oxygenImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.raw.oxygen) // Replace with the GIF in your 'raw' folder
+            .into(oxygenImage)
+
 
         // Initialize shared preferences to load the last call timestamp
         val sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)

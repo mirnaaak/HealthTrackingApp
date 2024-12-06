@@ -76,7 +76,6 @@
                     android:id="@+id/heartRateImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-
                     android:contentDescription="Heart Rate"
                     android:layout_marginEnd="16dp" />
 
@@ -124,45 +123,65 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="10dp">
 
                 <!-- Oxygen Image -->
                 <ImageView
                     android:id="@+id/oxygenImage"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:src="@drawable/ic_pen"
-                    android:contentDescription="Oxygen Level" />
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:contentDescription="Oxygen Level"
+                    android:layout_marginEnd="16dp" />
 
-                <!-- SPO2 Text -->
-                <TextView
-                    android:id="@+id/spo2Text"
+                <!-- SPO2 Text and Measure Text -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SPO2"
-                    android:textSize="28sp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp" />
+                    android:orientation="vertical"
+                    android:gravity="center">
 
-                <!-- Measure Text -->
-                <TextView
-                    android:id="@+id/measureText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Measure"
-                    android:textSize="14sp"
-                    android:textColor="@color/darker_gray"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center" />
+                    <TextView
+                        android:id="@+id/spo2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SPO2"
+                        android:textSize="28sp"
+                        android:textColor="@color/red"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp" />
+
+                    <!-- Measure Text -->
+                    <TextView
+                        android:id="@+id/measureText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"
+                        android:textSize="25sp"
+                        android:textColor="@color/darker_gray"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- TextView above the Emergency Call Button -->
+            <!-- Measuring Oxygen Level Text -->
+            <TextView
+                android:id="@+id/measuringOxygenText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+                android:text="Measuring oxygen level"
+                android:textColor="@color/darker_gray"
+                android:textSize="14sp" />
+
+            <!-- Status Text -->
             <TextView
                 android:id="@+id/statusText"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/textview_border"
@@ -173,7 +192,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Emergency Button -->
+            <!-- Emergency Call Button -->
             <Button
                 android:id="@+id/EmergencyCallBtn"
                 android:layout_width="wrap_content"
