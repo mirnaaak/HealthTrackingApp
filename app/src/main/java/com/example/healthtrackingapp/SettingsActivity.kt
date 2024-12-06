@@ -141,4 +141,5 @@ class SettingsActivity : ComponentActivity() {
             }
         }
     }
+
 }

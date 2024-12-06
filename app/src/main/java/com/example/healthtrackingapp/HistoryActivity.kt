@@ -20,6 +20,7 @@ import java.util.Locale
 import java.util.Date
 
 class HistoryActivity : ComponentActivity() {
+
     private val calendar = Calendar.getInstance()
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var historyTable: TableLayout
@@ -33,7 +34,6 @@ class HistoryActivity : ComponentActivity() {
         setContentView(R.layout.history_layout)
 
         val backBtn: ImageView = findViewById(R.id.backArrowImageView)
-
 
         backBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)

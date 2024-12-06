@@ -1,4 +1,4 @@
-package com.example.healthtrackingapp.com.example.healthtrackingapp
+package com.example.healthtrackingapp
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,23 +7,22 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
-import DatabaseHelper
 import com.example.healthtrackingapp.R
+import DatabaseHelper
 
 class HealthMonitorService : Service() {
-
     private val db = FirebaseFirestore.getInstance()
     private val handler = Handler()
     private lateinit var sharedPreferences: SharedPreferences
-
     private var lastCallTimestamp: Long = 0
 
     private val fetchDataRunnable = object : Runnable {
@@ -35,14 +34,13 @@ class HealthMonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
         sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)
         lastCallTimestamp = sharedPreferences.getLong("lastCallTimestamp", 0)
 
         // Set up the foreground service notification
         startForegroundServiceWithNotification()
 
-        // Start the periodic data fetching
+        // Start periodic data fetching
         handler.post(fetchDataRunnable)
     }
 
@@ -107,31 +105,41 @@ class HealthMonitorService : Service() {
         cursor.close()
 
         if (phoneNumber.isNotEmpty()) {
-            val currentTime = System.currentTimeMillis()
-            val timeElapsed = currentTime - lastCallTimestamp
+            val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as android.telephony.TelephonyManager
+            val callState = telephonyManager.callState
 
-            if (timeElapsed >= 5 * 60 * 1000) { // Check 5-minute interval
-                // Add emergency call logic here
-                // ...
+            if (callState == android.telephony.TelephonyManager.CALL_STATE_IDLE) {
+                val currentTime = System.currentTimeMillis()
+                val timeElapsed = currentTime - lastCallTimestamp
 
-                // Save the timestamp of this call
-                lastCallTimestamp = currentTime
-                with(sharedPreferences.edit()) {
-                    putLong("lastCallTimestamp", lastCallTimestamp)
-                    apply()
+                if (timeElapsed >= 5 * 60 * 1000) { // Minimum 5-minute gap between calls
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        val callIntent = Intent(Intent.ACTION_CALL)
+                        callIntent.data = android.net.Uri.parse("tel:$phoneNumber")
+                        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Required for starting activity from service
+                        startActivity(callIntent)
+
+                        // Save timestamp
+                        lastCallTimestamp = currentTime
+                        sharedPreferences.edit().putLong("lastCallTimestamp", lastCallTimestamp).apply()
+                        Log.d("Service", "Emergency call initiated.")
+                    } else {
+                        Log.e("Service", "CALL_PHONE permission not granted.")
+                    }
+                } else {
+                    Log.d(
+                        "Service",
+                        "Emergency call skipped. Wait ${(5 * 60 * 1000 - timeElapsed) / 1000} seconds more."
+                    )
                 }
-                Log.d("Service", "Emergency call initiated.")
             } else {
-                val timeRemaining = 5 * 60 * 1000 - timeElapsed
-                Log.d(
-                    "Service",
-                    "Emergency call skipped. Wait ${timeRemaining / 1000} seconds more."
-                )
+                Log.d("Service", "Call not initiated. Phone is already in use.")
             }
         } else {
-            Toast.makeText(this, "No emergency contact number available", Toast.LENGTH_LONG).show()
+            Log.e("Service", "No emergency contact number available.")
         }
     }
+
 
     private fun insertReadingIntoHistory(hr: Int, spo2: Int, status: String) {
         val currentTime = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
@@ -139,19 +147,30 @@ class HealthMonitorService : Service() {
         val dbHelper = DatabaseHelper(this)
         val db = dbHelper.writableDatabase
 
-        val insertQuery = """
+        // Check if the date already exists
+        val checkQuery = "SELECT COUNT(*) FROM History WHERE Date = ?"
+        val checkStatement = db.compileStatement(checkQuery)
+        checkStatement.bindString(1, currentTime)
+        val count = checkStatement.simpleQueryForLong()
+
+        if (count == 0L) { // If no record exists for this date, insert the new reading
+            val insertQuery = """
             INSERT INTO History (Date, HR, SPO2, Status) 
             VALUES (?, ?, ?, ?)
         """
-        val statement = db.compileStatement(insertQuery)
-        statement.bindString(1, currentTime)
-        statement.bindLong(2, hr.toLong())
-        statement.bindLong(3, spo2.toLong())
-        statement.bindString(4, status)
+            val statement = db.compileStatement(insertQuery)
+            statement.bindString(1, currentTime)
+            statement.bindLong(2, hr.toLong())
+            statement.bindLong(3, spo2.toLong())
+            statement.bindString(4, status)
 
-        statement.executeInsert()
-        Log.d("Database", "Inserted data: Time = $currentTime, HR = $hr, SPO2 = $spo2, Status = $status")
+            statement.executeInsert()
+            Log.d("Database", "Inserted data: Time = $currentTime, HR = $hr, SPO2 = $spo2, Status = $status")
+        } else {
+            Log.d("Database", "Reading not inserted. Entry for Date = $currentTime already exists.")
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
