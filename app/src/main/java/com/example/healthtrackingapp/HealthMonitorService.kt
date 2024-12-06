@@ -63,7 +63,7 @@ class HealthMonitorService : Service() {
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
 
-        startForeground(1, notification)
+        startForeground(1, notification) // This ensures your service runs in the foreground
     }
 
     private fun fetchRandomReading() {

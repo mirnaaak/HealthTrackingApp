@@ -23,25 +23,20 @@ import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
 
-    // Firebase instance
     private val db = FirebaseFirestore.getInstance()
-
-    // Define variables for the UI elements
     private lateinit var heartRateText: TextView
     private lateinit var spo2Text: TextView
     private lateinit var statusText: TextView
     private lateinit var emergencyCallBtn: Button
+    private val REQUEST_CALL_PHONE = 1
+    private var lastCallTimestamp: Long = 0
+    private var Ebutton = 0
 
-    private val REQUEST_CALL_PHONE = 1  // Request code for CALL_PHONE permission
-
-    private var lastCallTimestamp: Long = 0 // Tracks the last valid call timestamp
-    var Ebutton=0
-    // Handler to run the fetch every 5 seconds
     private val handler = Handler()
     private val fetchDataRunnable = object : Runnable {
         override fun run() {
-            fetchRandomReading() // Fetch data from Firebase
-            handler.postDelayed(this, 5000) // Re-run this task every 5 seconds
+            fetchRandomReading()
+            handler.postDelayed(this, 5000)
         }
     }
 
@@ -50,26 +45,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
 
-        // Start the foreground service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(Intent(this, HealthMonitorService::class.java))
-        } else {
-            startService(Intent(this, HealthMonitorService::class.java))
-        }
-
-
-        // Initialize shared preferences to load the last call timestamp
-        val sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)
-        lastCallTimestamp = sharedPreferences.getLong("lastCallTimestamp", 0)
-
         // Initialize the UI elements
         heartRateText = findViewById(R.id.heartRateText)
         spo2Text = findViewById(R.id.spo2Text)
         statusText = findViewById(R.id.statusText)
         emergencyCallBtn = findViewById(R.id.EmergencyCallBtn)
 
+        // Retrieve the last call timestamp from SharedPreferences
+        val sharedPreferences = getSharedPreferences("HealthTrackingApp", MODE_PRIVATE)
+        lastCallTimestamp = sharedPreferences.getLong("lastCallTimestamp", 0)
+
         // Start the data fetching process
         handler.post(fetchDataRunnable)
+
+        emergencyCallBtn.setOnClickListener {
+            Ebutton = 1
+            initiateEmergencyCall()
+        }
 
         // History button logic
         val historyBtn: TextView = findViewById(R.id.historyButton)
@@ -84,12 +76,33 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
+    }
 
-        // Emergency Call button logic
-        emergencyCallBtn.setOnClickListener {
-            Ebutton=1
-            initiateEmergencyCall()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun startHealthMonitorService() {
+        val intent = Intent(this, HealthMonitorService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
         }
+    }
+
+    private fun stopHealthMonitorService() {
+        val intent = Intent(this, HealthMonitorService::class.java)
+        stopService(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Stop the background service when the app is in the foreground
+        stopHealthMonitorService()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Start the background service when the app goes into the background
+        startHealthMonitorService()
     }
 
     private fun fetchRandomReading() {
@@ -130,7 +143,6 @@ class MainActivity : ComponentActivity() {
     private fun initiateEmergencyCall() {
         val dbHelper = DatabaseHelper(this)
         val db = dbHelper.readableDatabase
-
         val cursor = db.rawQuery("SELECT PhoneNumber FROM EContact LIMIT 1", null)
         var phoneNumber = ""
 
@@ -143,7 +155,7 @@ class MainActivity : ComponentActivity() {
             val currentTime = System.currentTimeMillis()
             val timeElapsed = currentTime - lastCallTimestamp
             var callOkay = 0
-            if (timeElapsed < 5 * 60 * 1000) { // 5 minutes in milliseconds
+            if (timeElapsed < 5 * 60 * 1000) {
                 val timeRemaining = 5 * 60 * 1000 - timeElapsed
                 val minutesLeft = timeRemaining / 1000 / 60
                 val secondsLeft = (timeRemaining / 1000) % 60
@@ -181,10 +193,8 @@ class MainActivity : ComponentActivity() {
                         REQUEST_CALL_PHONE
                     )
                 }
-
             }
-        }
-        else {
+        } else {
             Toast.makeText(this, "No emergency contact number available", Toast.LENGTH_LONG)
                 .show()
         }
@@ -215,4 +225,13 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         handler.removeCallbacks(fetchDataRunnable)
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Start the background service again if needed
+        val serviceIntent = Intent(this, HealthMonitorService::class.java)
+        stopService(serviceIntent)
+    }
+
+
 }

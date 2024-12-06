@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.healthtrackingapp.com.example.healthtrackingapp.HealthMonitorService
 
 class SettingsActivity : ComponentActivity() {
     private var initialPhoneNumber: String = ""  // To store the initial phone number
